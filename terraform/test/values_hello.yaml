@@ -1,0 +1,43 @@
+replicaCount: 1
+image:
+  repository: public.ecr.aws/w0f5g4k6/hello-svc
+  pullPolicy: IfNotPresent
+  tag: "{{ .Values.image.tag }}"
+service:
+  type: ClusterIP
+  port: 80
+  name: hello
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/path: "/actuator/prometheus"
+ingress:
+  enabled: false
+  className: "alb"
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /hello
+    alb.ingress.kubernetes.io/group.name: myapp
+  hosts:
+    - host: hello.devops4solutions.com
+      paths:
+        - path: /hello
+          pathType: Prefix
+livenessProbe:
+  httpGet:
+    path: /hello
+    port: http
+readinessProbe:
+  httpGet:
+    path: /hello
+    port: http
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
