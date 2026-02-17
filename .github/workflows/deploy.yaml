@@ -13,7 +13,7 @@ on:
 jobs:
   build:
     uses: devops4solutions/github-reusable-workflows/.github/workflows/ci.yaml@main
-    with:
+    with: #La syntaxe pour passer le variables c'est "with"
       ecr-registry: public.ecr.aws/d0p8w4f7
       ecr-repository: hello-svc
       image-tag: ${{ github.sha }}
@@ -23,12 +23,59 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   terraform:
-   needs: build
-   uses: devops4solutions/github-reusable-workflows/.github/workflows/cd.yaml@main
-   with:
-     working-directory: terraform
-     container_version: ${{ github.sha }}
-     environment: dev
-   secrets:
-     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    needs: build
+    name: ${{ matrix.environment }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    strategy:
+      max-parallel: 1
+      matrix:
+        include:
+          - environment: dev
+    
+    env:
+      TF_VAR_container_version: ${{ github.sha }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+      
+      - name: Terraform Init
+        id: init
+        run: |
+          rm -rf .terraform
+          terraform init -backend-config=${{ matrix.environment }}/backend.tfvars -upgrade=true -no-color -input=false
+      
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan -var-file=${{ matrix.environment }}/terraform.tfvars -no-color
+      
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        id: apply
+        run: |
+          terraform apply -var-file=${{ matrix.environment }}/terraform.tfvars -no-color -auto-approve
+
+  # terraform:
+  #  needs: build
+  #  uses: devops4solutions/github-reusable-workflows/.github/workflows/cd.yaml@main
+  #  with:
+  #    working-directory: terraform #La syntaxe pour passer le variables c'est "with" terraform
+  #    container_version: ${{ github.sha }}
+  #    environment: dev
+  #  secrets:
+  #    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

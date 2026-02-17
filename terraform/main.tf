@@ -14,6 +14,6 @@ resource "helm_release" "myapp" {
   ]
     set {
     name  = "image.tag"
-    value = var.container_version  # Pass dynamic value here!
+    value = var.container_version  # Pass dynamic value here
   }
 }
