@@ -19,7 +19,7 @@ ingress:
     alb.ingress.kubernetes.io/healthcheck-path: /hello
     alb.ingress.kubernetes.io/group.name: myapp
   hosts:
-    - host: hello.devops4solutions.com
+    - host: hello.com
       paths:
         - path: /hello
           pathType: Prefix
