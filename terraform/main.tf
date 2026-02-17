@@ -12,8 +12,10 @@ resource "helm_release" "myapp" {
       # ACM = data.aws_acm_certificate.acm.arn!
     })
   ]
-    set {
-    name  = "image.tag"
-    value = var.container_version  # Pass dynamic value here
-  }
+  set = [
+    {
+      name  = "image.tag"
+      value = var.container_version  # Pass dynamic value here
+    }
+  ]
 }
