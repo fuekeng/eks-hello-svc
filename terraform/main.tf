@@ -9,7 +9,7 @@ resource "helm_release" "myapp" {
   values = [
     templatefile("${path.module}/${var.environment}/values_hello.yaml", {
       ENVIRONMENT = var.environment,
-      # ACM = data.aws_acm_certificate.acm.arn!
+      # ACM = data.aws_acm_certificate.acm.arn
     })
   ]
     set {
