@@ -8,10 +8,18 @@ resource "helm_release" "myapp" {
   force_update = true
   values = [
     templatefile("${path.module}/${var.environment}/values_hello.yaml", {
-      ENVIRONMENT = var.environment,
-      # ACM = data.aws_acm_certificate.acm.arn!
+      ENVIRONMENT = var.environment
     })
   ]
+
+  #   values = [
+  #   templatefile("${path.module}/${var.environment}/values_hello.yaml", {
+  #     ENVIRONMENT = var.environment,
+  #     ACM = data.aws_acm_certificate.acm.arn
+  #   })
+  # ]
+
+
   set = [
     {
       name  = "image.tag"
