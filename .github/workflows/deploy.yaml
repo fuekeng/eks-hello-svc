@@ -56,7 +56,8 @@ jobs:
         id: init
         run: |
           ls -la .
-                    cat dev
+          ls -la  dev
+          cat terraform/dev/backend.tfvars
           rm -rf .terraform
           terraform init -backend-config=${{ matrix.environment }}/backend.tfvars -upgrade=true -no-color -input=false
       
