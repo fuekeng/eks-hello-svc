@@ -3,7 +3,7 @@ resource "helm_release" "myapp" {
   repository = "https://fuekeng.github.io/springboot-helm-chart/" # Using the published Helm repo
   chart      = "springboot"
   namespace  = "app1"  # Change as per your setup
-  version    = "0.1.5"    # Use the correct version from index.yaml!
+  version    = "0.0.0"    # Use the correct version from index.yaml!
   create_namespace = true
   force_update = true
   values = [
