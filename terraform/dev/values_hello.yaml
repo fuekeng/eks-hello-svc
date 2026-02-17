@@ -1,15 +1,19 @@
 replicaCount: 1
+
 image:
   repository: public.ecr.aws/d0p8w4f7/hello-svc
   pullPolicy: IfNotPresent
   tag: "{{ .Values.image.tag }}"
+
 service:
   type: ClusterIP
   port: 80
   name: hello
+
 podAnnotations:
   prometheus.io/scrape: "true"
   prometheus.io/path: "/actuator/prometheus"
+
 ingress:
   enabled: true
   className: "alb"
@@ -19,26 +23,29 @@ ingress:
     alb.ingress.kubernetes.io/healthcheck-path: /hello
     alb.ingress.kubernetes.io/group.name: myapp1
     alb.ingress.kubernetes.io/load-balancer-name: "${ENVIRONMENT}-microservices-alb"
-    alb.ingress.kubernetes.io/ssl-redirect: "443"
-    alb.ingress.kubernetes.io/listen-ports: "[{\"HTTP\":80},{\"HTTPS\":443}]"
+    alb.ingress.kubernetes.io/listen-ports: "[{\"HTTP\":80}]"  # HTTP uniquement
   hosts:
-    - host: hello.com
+    - host: hello.${ENVIRONMENT}.devops4solutions.com
       paths:
         - path: /hello
           pathType: Prefix
+
 livenessProbe:
   httpGet:
     path: /hello
     port: http
+
 readinessProbe:
   httpGet:
     path: /hello
     port: http
+
 serviceAccount:
   create: true
   automount: true
   annotations: {}
   name: ""
+
 autoscaling:
   enabled: false
   minReplicas: 1
