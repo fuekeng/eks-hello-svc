@@ -24,6 +24,7 @@ ingress:
     alb.ingress.kubernetes.io/listen-ports: "[{\"HTTP\":80},{\"HTTPS\":443}]"
   hosts:
     # - host: hello.${ENVIRONMENT}.devops4solutions.com
+    - host: hello.com
       paths:
         - path: /hello
           pathType: Prefix
