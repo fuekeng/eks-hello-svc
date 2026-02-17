@@ -19,11 +19,9 @@ ingress:
     alb.ingress.kubernetes.io/healthcheck-path: /hello
     alb.ingress.kubernetes.io/group.name: myapp1
     alb.ingress.kubernetes.io/load-balancer-name: "${ENVIRONMENT}-microservices-alb"
-    # alb.ingress.kubernetes.io/certificate-arn: "${ACM}"
     alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/listen-ports: "[{\"HTTP\":80},{\"HTTPS\":443}]"
   hosts:
-    # - host: hello.${ENVIRONMENT}.devops4solutions.com
     - host: hello.com
       paths:
         - path: /hello
