@@ -12,8 +12,6 @@ resource "helm_release" "myapp" {
     })
   ]
 
-
-
   set = [
     {
       name  = "image.tag"
