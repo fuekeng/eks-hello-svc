@@ -7,7 +7,7 @@ provider "helm" {
   kubernetes = {
     host                   = data.aws_eks_cluster.cluster.endpoint
     token                  = data.aws_eks_cluster_auth.cluster.token
-    insecure = false
+    insecure = true
   }
 }
 terraform {
