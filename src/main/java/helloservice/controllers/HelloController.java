@@ -19,6 +19,6 @@ public class HelloController {
         Counter helloCounter = meterRegistry.counter("requests.hello");
         helloCounter.increment();  // Increment every time this endpoint is hit
 
-        return "****Hello from Hello Service****";
+        return "****Hello from Hello my freed Service****";
     }
 }
