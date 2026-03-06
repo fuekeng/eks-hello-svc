@@ -6,6 +6,12 @@ resource "helm_release" "myapp" {
   version    = "0.0.0"    # Use the correct version from index.yaml!
   create_namespace = true
   force_update = true
+  
+  wait             = true
+  timeout          = 600
+  cleanup_on_fail  = true
+  dependency_update = true
+  #replace = true
   values = [
     templatefile("${path.module}/${var.environment}/values_hello.yaml", {
       ENVIRONMENT = var.environment
