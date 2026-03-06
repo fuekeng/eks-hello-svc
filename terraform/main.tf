@@ -11,7 +11,7 @@ resource "helm_release" "myapp" {
   timeout          = 600
   cleanup_on_fail  = true
   dependency_update = true
-  #replace = true
+  replace = true
   values = [
     templatefile("${path.module}/${var.environment}/values_hello.yaml", {
       ENVIRONMENT = var.environment
