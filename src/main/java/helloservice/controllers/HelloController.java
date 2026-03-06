@@ -15,7 +15,7 @@ public class HelloController {
     // Custom metric to count the number of requests to /hello
     @GetMapping("/hello")
     public String getHello() {
-        // Increment the custom counter metric
+        // Increment the custom counter metric!
         Counter helloCounter = meterRegistry.counter("requests.hello");
         helloCounter.increment();  // Increment every time this endpoint is hit
 
