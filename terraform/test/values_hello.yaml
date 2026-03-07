@@ -1,6 +1,6 @@
 replicaCount: 1
 image:
-  repository: public.ecr.aws/w0f5g4k6/hello-svc
+  repository: public.ecr.aws/d0p8w4f7/hello-svc
   pullPolicy: IfNotPresent
   tag: "{{ .Values.image.tag }}"
 service:

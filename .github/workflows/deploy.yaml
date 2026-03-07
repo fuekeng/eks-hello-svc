@@ -14,7 +14,7 @@ jobs:
   build:
     uses: devops4solutions/github-reusable-workflows/.github/workflows/ci.yaml@main
     with: #La syntaxe pour passer le variables c'est "with"
-      ecr-registry: public.ecr.aws/d0p8w4f7
+      ecr-registry: public.ecr.aws/d0p8w4f7 
       ecr-repository: hello-svc
       image-tag: ${{ github.sha }}
       jar-name: helloservice-1.jar
