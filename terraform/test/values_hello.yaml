@@ -17,7 +17,8 @@ ingress:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/healthcheck-path: /hello
-    alb.ingress.kubernetes.io/group.name: myapp
+    alb.ingress.kubernetes.io/group.name: myapp1
+    alb.ingress.kubernetes.io/load-balancer-name: "${ENVIRONMENT}-microservices-alb"
   hosts:
     - host: hello.com
       paths:
