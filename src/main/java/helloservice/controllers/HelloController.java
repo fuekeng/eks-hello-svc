@@ -18,7 +18,8 @@ public class HelloController {
         // Increment the custom counter metric!
         Counter helloCounter = meterRegistry.counter("requests.hello");
         helloCounter.increment();  // Increment every time this endpoint is hit
-
+        System.out.println("Counter value: " + helloCounter.count());
+    
         return "****Hello from Hello my freed Service****";
     }
 }
